@@ -1,0 +1,86 @@
+- name: Ensure apt-get is updated (Debian/Ubuntu)
+  when: ansible_os_family == "Debian"
+  apt:
+    update_cache: yes
+
+- name: Ensure pacman is updated (Arch)
+  when: ansible_os_family == "Archlinux"
+  pacman:
+    update_cache: yes
+
+- name: Define Homebrew taps (MacOS)
+  when: ansible_os_family == "Darwin"
+  homebrew_tap:
+    name: "{{ item }}"
+  loop:
+    - derailed/k9s
+    - felixkratz/formulae
+    - hashicorp/tap
+    - helm/tap
+    - homebrew/services
+    - koekeishiya/formulae
+
+- name: Install common packages (MacOS)
+  when: ansible_os_family == "Darwin"
+  homebrew:
+    name: "{{ item }}"
+  loop:
+    - azure-cli
+    - borders
+    - ca-certificates
+    - cmake
+    - cmctl
+    - coreutils
+    - docker-compose
+    - fzf
+    - gh
+    - gnupg
+    - go
+    - golangci-lint
+    - helm
+    - istioctl
+    - jq
+    - k9s
+    - kind
+    - kubebuilder
+    - neofetch
+    - neovim
+    - node
+    - pnpm
+    - pyenv
+    - ripgrep
+    - sketchybar
+    - skhd
+    - sqlite
+    - terraform
+    - tmux
+    - tree
+    - vault
+    - wget
+    - xz
+    - yabai
+    - yq
+    - google-cloud-sdk
+    - powershell
+    - qmk-toolbox
+    - sf-symbols
+
+- name: Install common packages (Debian/Ubuntu)
+  when: ansible_os_family == "Debian"
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - git
+    - curl
+    - wget
+
+- name: Install common packages (Arch)
+  when: ansible_os_family == "Archlinux"
+  pacman:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - git
+    - curl
+    - wget
